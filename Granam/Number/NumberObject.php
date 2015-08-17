@@ -4,9 +4,6 @@ namespace Granam\Number;
 use Granam\Number\Tools\ToNumber;
 use Granam\Scalar\Scalar;
 
-/**
- * @method float getValue()
- */
 class NumberObject extends Scalar implements NumberInterface
 {
 
