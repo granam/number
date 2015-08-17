@@ -11,11 +11,6 @@ class NumberObject extends Scalar implements NumberInterface
 {
 
     /**
-     * @var  bool
-     */
-    protected $paranoid;
-
-    /**
      * @param mixed $value
      * @param bool $paranoid Throws exception if some value is lost on cast because of rounding
      */
