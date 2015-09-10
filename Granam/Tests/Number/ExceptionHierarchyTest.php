@@ -17,6 +17,6 @@ class ExceptionHierarchyTest extends AbstractTestOfExceptionsHierarchy
 
     protected function getExternalRootNamespace()
     {
-        return '\Granam';
+        return '\Granam\Scalar';
     }
 }

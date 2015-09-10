@@ -1,7 +1,7 @@
 <?php
 namespace Granam\Number\Exceptions;
 
-interface Runtime extends Exception, \Granam\Exceptions\Runtime
+interface Runtime extends Exception, \Granam\Scalar\Exceptions\Runtime
 {
 
 }
