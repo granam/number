@@ -1,22 +1,24 @@
 <?php
-namespace Granam\Number;
+namespace Granam\Tests\Number;
 
-use Granam\Exceptions\Tests\Tools\AbstractTestOfExceptionsHierarchy;
+use Granam\Tests\Exceptions\Tools\AbstractExceptionsHierarchyTest;
 
-class ExceptionHierarchyTest extends AbstractTestOfExceptionsHierarchy
+class ExceptionHierarchyTest extends AbstractExceptionsHierarchyTest
 {
     protected function getTestedNamespace()
     {
-        return __NAMESPACE__;
+        return $this->getRootNamespace();
     }
 
     protected function getRootNamespace()
     {
-        return $this->getTestedNamespace();
+        return str_replace('\Tests', '', __NAMESPACE__);
     }
 
     protected function getExternalRootNamespace()
     {
-        return '\Granam\Scalar';
+        $externalRootException = new \ReflectionClass('\Granam\Scalar\ScalarInterface');
+
+        return $externalRootException->getNamespaceName();
     }
 }

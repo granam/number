@@ -1,18 +1,21 @@
 <?php
-namespace Granam\Number\Tools;
+namespace Granam\Tests\Number\Tools;
 
-use Granam\Exceptions\Tests\Tools\AbstractTestOfExceptionsHierarchy;
+use Granam\Number\NumberObject;
+use Granam\Tests\Exceptions\Tools\AbstractExceptionsHierarchyTest;
 
-class ExceptionHierarchyTest extends AbstractTestOfExceptionsHierarchy
+class ExceptionHierarchyTest extends AbstractExceptionsHierarchyTest
 {
     protected function getTestedNamespace()
     {
-        return __NAMESPACE__;
+        return str_replace('\Tests', '', __NAMESPACE__);
     }
 
     protected function getRootNamespace()
     {
-        return $this->getTestedNamespace();
+        $rootReflection = new \ReflectionClass(NumberObject::getClass());
+
+        return $rootReflection->getNamespaceName();
     }
 
 }
