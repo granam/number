@@ -19,9 +19,9 @@ class ToNumber
         if (is_int($value)) {
             return $value;
         }
-        if (is_bool($value) || is_null($value)) {
+        if (is_bool($value) || $value === null) {
             // true = 1; false = 0; null = 0
-            return intval($value);
+            return (int)$value;
         }
 
         try {
@@ -30,13 +30,13 @@ class ToNumber
             throw new Exceptions\WrongParameterType($exception->getMessage(), $exception->getCode(), $exception);
         }
 
-        $floatValue = floatval($stringValue); // note: '' = 0.0
+        $floatValue = (float)$stringValue; // note: '' = 0.0
         if ($paranoid) {
             self::checkIfNoValueHasBeenLostByCast($floatValue, $stringValue);
         }
 
-        $intValue = intval($floatValue);
-        if (floatval($intValue) === $floatValue) {
+        $intValue = (int)$floatValue;
+        if ((float)$intValue === $floatValue) {
             return $intValue;
         }
 
@@ -45,9 +45,8 @@ class ToNumber
 
     private static function checkIfNoValueHasBeenLostByCast($floatValue, $stringValue)
     {
-        preg_match('~^(?:\s*0*)(?<numericPart>\d+(\.([1-9]+|0+(?=[1-9]+))+)*)~', $stringValue, $numericParts);
         $numericPart = '0';
-        if (isset($numericParts['numericPart'])) {
+        if (preg_match('~^(?:\s*0*)(?<numericPart>\d+(\.([1-9]+|0+(?=[1-9]+))+)*)~', $stringValue, $numericParts) > 0) {
             $numericPart = $numericParts['numericPart'];
         }
 
