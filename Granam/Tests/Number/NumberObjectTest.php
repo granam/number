@@ -1,0 +1,318 @@
+<?php
+namespace Granam\Tests\Number;
+
+use Granam\Number\NumberObject;
+
+class NumberObjectTest extends \PHPUnit_Framework_TestCase
+{
+    /**
+     * @test
+     * @dataProvider provideStrictnessAndParanoia
+     * @param bool $strict
+     * @param bool $paranoid
+     */
+    public function I_can_use_it($strict, $paranoid)
+    {
+        $numberObject = new NumberObject($value = 123.456, $strict, $paranoid);
+        self::assertNotNull($numberObject);
+        self::assertInstanceOf('Granam\Number\NumberInterface', $numberObject);
+        self::assertSame("$value", "$numberObject");
+        self::assertEquals($numberObject, $this->createByFactoryMethod($value, $strict, $paranoid));
+    }
+
+    public function provideStrictnessAndParanoia()
+    {
+        return [
+            [false, false],
+            [false, true],
+            [true, false],
+            [true, true],
+        ];
+    }
+
+    private function createByFactoryMethod($value, $strict, $paranoid)
+    {
+        if (!$strict && !$paranoid) {
+            return NumberObject::createTolerant($value);
+        }
+        if (!$strict && $paranoid) {
+            return NumberObject::createParanoid($value);
+        }
+
+        return NumberObject::createStrictAndParanoid($value);
+    }
+
+    /**
+     * @test
+     * @dataProvider provideStrictnessAndParanoia
+     * @param bool $strict
+     * @param bool $paranoid
+     */
+    public function I_can_get_given_value($strict, $paranoid)
+    {
+        $numberObject = new NumberObject($value = 123.456, $strict, $paranoid);
+        self::assertSame($value, $numberObject->getValue());
+        self::assertEquals($numberObject, $this->createByFactoryMethod($value, $strict, $paranoid));
+    }
+
+    /**
+     * @test
+     * @dataProvider provideStrictnessAndParanoia
+     * @param bool $strict
+     * @param bool $paranoid
+     */
+    public function I_can_use_integer($strict, $paranoid)
+    {
+        $withInteger = new NumberObject($integer = 123, $strict, $paranoid);
+        self::assertSame($integer, $withInteger->getValue());
+        self::assertEquals($withInteger, $this->createByFactoryMethod($integer, $strict, $paranoid));
+        $withStringInteger = new NumberObject($stringInteger = '456', $strict, $paranoid);
+        self::assertSame((int)$stringInteger, $withStringInteger->getValue());
+        self::assertSame("$stringInteger", "$withStringInteger");
+        self::assertEquals($withStringInteger, $this->createByFactoryMethod($stringInteger, $strict, $paranoid));
+    }
+
+    /**
+     * @test
+     * @dataProvider provideStrictnessAndParanoia
+     * @param bool $strict
+     * @param bool $paranoid
+     */
+    public function I_can_use_false_to_get_integer_zero($strict, $paranoid)
+    {
+        $numberObject = new NumberObject($value = false, $strict, $paranoid);
+        self::assertSame(0, $numberObject->getValue());
+        self::assertSame((int)false, $numberObject->getValue());
+        self::assertEquals($numberObject, $this->createByFactoryMethod($value, $strict, $paranoid));
+    }
+
+    /**
+     * @test
+     * @dataProvider provideStrictnessAndParanoia
+     * @param bool $strict
+     * @param bool $paranoid
+     */
+    public function I_can_use_true_to_get_integer_one($strict, $paranoid)
+    {
+        $numberObject = new NumberObject($value = true, $strict, $paranoid);
+        self::assertSame(1, $numberObject->getValue());
+        self::assertSame((int)true, $numberObject->getValue());
+        self::assertEquals($numberObject, $this->createByFactoryMethod($value, $strict, $paranoid));
+    }
+
+    /**
+     * @test
+     * @expectedException \Granam\Number\Tools\Exceptions\WrongParameterType
+     * @expectedExceptionMessageRegExp ~got NULL~
+     */
+    public function I_can_not_use_null_by_default()
+    {
+        new NumberObject(null);
+    }
+
+    /**
+     * @test
+     * @dataProvider provideParanoia
+     * @param bool $paranoid
+     */
+    public function I_can_use_null_as_integer_zero_if_not_strict($paranoid)
+    {
+        $numberObject = new NumberObject($value = null, false /* not strict */, $paranoid);
+        self::assertSame(0, $numberObject->getValue());
+        self::assertSame((int)null, $numberObject->getValue());
+        self::assertEquals($numberObject, $this->createByFactoryMethod($value, false /* not strict */, $paranoid));
+    }
+
+    public function provideParanoia()
+    {
+        return [
+            [true],
+            [false],
+        ];
+    }
+
+    /**
+     * @test
+     * @expectedException \Granam\Number\Exceptions\WrongParameterType
+     * @dataProvider provideStrictnessAndParanoia
+     * @param bool $strict
+     * @param bool $paranoid
+     */
+    public function I_cannot_use_array($strict, $paranoid)
+    {
+        new NumberObject([], $strict, $paranoid);
+    }
+
+    /**
+     * @test
+     * @expectedException \Granam\Number\Exceptions\WrongParameterType
+     * @dataProvider provideStrictnessAndParanoia
+     * @param bool $strict
+     * @param bool $paranoid
+     */
+    public function I_cannot_use_resource($strict, $paranoid)
+    {
+        new NumberObject(tmpfile(), $strict, $paranoid);
+    }
+
+    /**
+     * @test
+     * @expectedException \Granam\Number\Exceptions\WrongParameterType
+     * @dataProvider provideStrictnessAndParanoia
+     * @param bool $strict
+     * @param bool $paranoid
+     */
+    public function I_cannot_use_object_without_to_string_magic($strict, $paranoid)
+    {
+        new NumberObject(new \stdClass(), $strict, $paranoid);
+    }
+
+    /**
+     * @test
+     * @dataProvider provideStrictnessAndParanoia
+     * @param bool $strict
+     * @param bool $paranoid
+     */
+    public function I_can_use_object_with_to_string($strict, $paranoid)
+    {
+        $floatNumberObject = new NumberObject(new TestWithToString($floatValue = 123.456), $strict, $paranoid);
+        self::assertSame($floatValue, $floatNumberObject->getValue());
+        self::assertEquals($floatNumberObject, $this->createByFactoryMethod($floatValue, $strict, $paranoid));
+        $integerNumberObject = new NumberObject(new TestWithToString($integerValue = 789), $strict, $paranoid);
+        self::assertSame($integerValue, $integerNumberObject->getValue());
+        self::assertEquals($integerNumberObject, $this->createByFactoryMethod($integerValue, $strict, $paranoid));
+        $stringAsFloatNumberObject = new NumberObject(new TestWithToString($stringFloat = '987.654'), $strict, $paranoid);
+        self::assertSame((float)$stringFloat, $stringAsFloatNumberObject->getValue());
+        self::assertEquals($stringAsFloatNumberObject, $this->createByFactoryMethod($stringFloat, $strict, $paranoid));
+        $stringAsIntegerNumberObject = new NumberObject(new TestWithToString($stringInteger = '7890'), $strict, $paranoid);
+        self::assertSame((int)$stringInteger, $stringAsIntegerNumberObject->getValue());
+        self::assertEquals($stringAsIntegerNumberObject, $this->createByFactoryMethod($stringInteger, $strict, $paranoid));
+    }
+
+    /**
+     * @test
+     * @expectedException \Granam\Number\Tools\Exceptions\WrongParameterType
+     */
+    public function I_can_not_use_non_digits_by_default()
+    {
+        new NumberObject('some string without digits');
+    }
+
+    /**
+     * @test
+     * @dataProvider provideParanoia
+     * @expectedException \Granam\Number\Tools\Exceptions\WrongParameterType
+     * @param bool $paranoid
+     */
+    public function I_can_not_use_non_digits_if_strict($paranoid)
+    {
+        new NumberObject('some string without digits', true /* strict */, $paranoid);
+    }
+
+    /**
+     * @test
+     * @dataProvider provideParanoia
+     * @param bool $paranoid
+     */
+    public function I_got_zero_from_non_digit_string_if_not_strict($paranoid)
+    {
+        $numberObject = new NumberObject('some string without digits', false /* not strict */, $paranoid);
+        self::assertSame(0, $numberObject->getValue());
+    }
+
+    /**
+     * @test
+     * @dataProvider provideStrictnessAndParanoia
+     * @param bool $strict
+     * @param bool $paranoid
+     */
+    public function I_get_number_without_wrapping_trash($strict, $paranoid)
+    {
+        $withWrappingZeroes = new NumberObject($zeroWrappedNumber = '0000123456.789000', $strict, $paranoid);
+        self::assertSame(123456.789, $withWrappingZeroes->getValue());
+        self::assertSame((float)$zeroWrappedNumber, $withWrappingZeroes->getValue());
+        $integerLike = new NumberObject($integerLikeNumber = '0000123456.0000', $strict, $paranoid);
+        self::assertSame(123456, $integerLike->getValue());
+        self::assertSame((int)$integerLikeNumber, $integerLike->getValue());
+    }
+
+    /**
+     * @test
+     * @dataProvider provideParanoia
+     * @param bool $paranoid
+     */
+    public function I_get_number_without_leading_non_zero_trash_if_not_strict($paranoid)
+    {
+        $trashAround = new NumberObject($trashWrappedNumber = '   123456.0051500  foo bar 12565.04181 ', false /* not strict */, $paranoid);
+        self::assertSame(123456.00515, $trashAround->getValue());
+        self::assertSame((float)$trashWrappedNumber, $trashAround->getValue());
+    }
+
+    /**
+     * @test
+     * @expectedException \Granam\Number\Tools\Exceptions\WrongParameterType
+     */
+    public function I_can_not_use_value_with_leading_non_zer_trash_by_default()
+    {
+        new NumberObject($trashWrappedNumber = '   123456.0051500  foo bar 12565.04181 ');
+
+    }
+
+    /**
+     * @test
+     * @dataProvider provideStrictness
+     * @param bool $strict
+     */
+    public function I_get_silently_rounded_number_by_default($strict)
+    {
+        $smallFloat = new NumberObject($withTooLongDecimal = '123456.999999999999999999999999999999999999', $strict);
+        self::assertSame(123457, $smallFloat->getValue());
+        self::assertSame((int)(float)$withTooLongDecimal, $smallFloat->getValue());
+        $explicitlyNonParanoidSmallFloat = new NumberObject($withTooLongDecimal, $strict, false);
+        self::assertEquals($smallFloat, $explicitlyNonParanoidSmallFloat);
+        $largeFloat = new NumberObject($withTooLongInteger = '222222222222222222222222222222222222222222.123', $strict);
+        self::assertSame(2.2222222222222224E+41, $largeFloat->getValue());
+        self::assertSame((float)$withTooLongInteger, $largeFloat->getValue());
+        $explicitlyNonParanoidLargeFloat = new NumberObject($withTooLongInteger, $strict, false);
+        self::assertEquals($largeFloat, $explicitlyNonParanoidLargeFloat);
+    }
+
+    public function provideStrictness()
+    {
+        return [
+            [true],
+            [false],
+        ];
+    }
+
+    /**
+     * @test
+     * @expectedException \Granam\Number\Tools\Exceptions\ValueLostOnCast
+     * @dataProvider provideStrictness
+     * @param bool $strict
+     */
+    public function I_can_force_exception_on_rounding($strict)
+    {
+        $nothingIsLost = new NumberObject($value = '123456.9999999', $strict, true /* paranoid */);
+        self::assertSame((float)$value, $nothingIsLost->getValue());
+        new NumberObject('123456.999999999999999999999999999999999999', $strict, true /* paranoid */);
+        self::fail('Paranoid test failed'); // should never reach it because of previous exception
+    }
+
+}
+
+/** inner */
+class TestWithToString
+{
+    private $value;
+
+    public function __construct($value)
+    {
+        $this->value = $value;
+    }
+
+    public function __toString()
+    {
+        return (string)$this->value;
+    }
+}

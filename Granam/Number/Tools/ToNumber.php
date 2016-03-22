@@ -2,16 +2,18 @@
 namespace Granam\Number\Tools;
 
 use Granam\Scalar\Tools\ToString;
+use Granam\Tools\ValueDescriber;
 
 class ToNumber
 {
     /**
      * @param $value
-     * @param bool $paranoid Throws exception if some value is lost on cast due to rounding on cast
+     * @param bool $strict = true allows only explicit values, not null and empty string
+     * @param bool $paranoid = false raises an exception if some value is lost on cast due to rounding on cast
      *
      * @return float|int
      */
-    public static function toNumber($value, $paranoid = false)
+    public static function toNumber($value, $strict = true, $paranoid = false)
     {
         if (is_float($value)) {
             return $value;
@@ -19,8 +21,8 @@ class ToNumber
         if (is_int($value)) {
             return $value;
         }
-        if (is_bool($value) || $value === null) {
-            // true = 1; false = 0; null = 0
+        if (is_bool($value)) {
+            // true = 1; false = 0;
             return (int)$value;
         }
 
@@ -28,6 +30,13 @@ class ToNumber
             $stringValue = ToString::toString($value);
         } catch (\Granam\Scalar\Tools\Exceptions\WrongParameterType $exception) {
             throw new Exceptions\WrongParameterType($exception->getMessage(), $exception->getCode(), $exception);
+        }
+
+        if ($strict && !is_numeric($stringValue)) { // no number at all (casted null, empty string, non-digits...)
+            throw new Exceptions\WrongParameterType(
+                'Only numbers and booleans are allowed in strict mode, got ' . ValueDescriber::describe($value)
+                . ' expressed as string ' . ValueDescriber::describe($stringValue)
+            );
         }
 
         $floatValue = (float)$stringValue; // note: '' = 0.0
