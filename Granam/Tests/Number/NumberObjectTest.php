@@ -192,21 +192,23 @@ class NumberObjectTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @expectedException \Granam\Number\Tools\Exceptions\WrongParameterType
+     * @dataProvider provideNonNumericNonBoolean
+     * @param $value
      */
-    public function I_can_not_use_non_digits_by_default()
+    public function I_can_not_use_non_numeric_non_boolean_by_default($value)
     {
-        new NumberObject('some string without digits');
+        new NumberObject($value);
     }
 
-    /**
-     * @test
-     * @dataProvider provideParanoia
-     * @expectedException \Granam\Number\Tools\Exceptions\WrongParameterType
-     * @param bool $paranoid
-     */
-    public function I_can_not_use_non_digits_if_strict($paranoid)
+    public function provideNonNumericNonBoolean()
     {
-        new NumberObject('some string without digits', true /* strict */, $paranoid);
+        return [
+            [null],
+            [''],
+            ["  \n\t  \r"],
+            ['one'],
+            ['one 2'],
+        ];
     }
 
     /**
