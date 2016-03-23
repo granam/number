@@ -2,9 +2,10 @@
 namespace Granam\Number\Tools;
 
 use Granam\Scalar\Tools\ToString;
+use Granam\Strict\Object\StrictObject;
 use Granam\Tools\ValueDescriber;
 
-class ToNumber
+class ToNumber extends StrictObject
 {
     /**
      * @param $value

@@ -2,9 +2,33 @@
 namespace Granam\Tests\Number;
 
 use Granam\Number\NumberObject;
+use Granam\Number\Tools\ToNumber;
 
 class NumberObjectTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @test
+     */
+    public function I_can_create_it_same_way_as_using_to_number()
+    {
+        $reflection = new \ReflectionClass(NumberObject::getClass());
+        $constructorParameters = $reflection->getConstructor()->getParameters();
+        $toNumber = new \ReflectionClass(ToNumber::getClass());
+        $toNumberParameters = $toNumber->getMethod('toNumber')->getParameters();
+        self::assertEquals($toNumberParameters, $constructorParameters);
+        foreach ($constructorParameters as $index => $constructorParameter) {
+            $toNumberParameter = $toNumberParameters[$index];
+            self::assertEquals($toNumberParameter, $constructorParameter);
+            self::assertSame($toNumberParameter->isOptional(), $constructorParameter->isOptional());
+            self::assertSame($toNumberParameter->allowsNull(), $constructorParameter->allowsNull());
+            self::assertSame($toNumberParameter->isDefaultValueAvailable(), $constructorParameter->isDefaultValueAvailable());
+            if ($constructorParameter->isDefaultValueAvailable()) {
+                self::assertSame($toNumberParameter->getDefaultValue(), $constructorParameter->getDefaultValue());
+            }
+            self::assertSame($toNumberParameter->getName(), $constructorParameter->getName());
+        }
+    }
+
     /**
      * @test
      * @dataProvider provideStrictnessAndParanoia
