@@ -149,7 +149,7 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
 
     /**
      * @test
-     * @expectedException \Granam\Number\Exceptions\WrongParameterType
+     * @expectedException \Granam\Number\Tools\Exceptions\WrongParameterType
      * @dataProvider provideStrictnessAndParanoia
      * @param bool $strict
      * @param bool $paranoid
@@ -161,7 +161,7 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
 
     /**
      * @test
-     * @expectedException \Granam\Number\Exceptions\WrongParameterType
+     * @expectedException \Granam\Number\Tools\Exceptions\WrongParameterType
      * @dataProvider provideStrictnessAndParanoia
      * @param bool $strict
      * @param bool $paranoid
@@ -173,7 +173,7 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
 
     /**
      * @test
-     * @expectedException \Granam\Number\Exceptions\WrongParameterType
+     * @expectedException \Granam\Number\Tools\Exceptions\WrongParameterType
      * @dataProvider provideStrictnessAndParanoia
      * @param bool $strict
      * @param bool $paranoid

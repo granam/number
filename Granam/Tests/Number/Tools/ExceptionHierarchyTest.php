@@ -18,4 +18,11 @@ class ExceptionHierarchyTest extends AbstractExceptionsHierarchyTest
         return $rootReflection->getNamespaceName();
     }
 
+    protected function getExternalRootNamespaces()
+    {
+        $externalRootException = new \ReflectionClass('\Granam\Scalar\ScalarInterface');
+
+        return $externalRootException->getNamespaceName();
+    }
+
 }

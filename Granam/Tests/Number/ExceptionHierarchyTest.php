@@ -15,10 +15,10 @@ class ExceptionHierarchyTest extends AbstractExceptionsHierarchyTest
         return str_replace('\Tests', '', __NAMESPACE__);
     }
 
-    protected function getExternalRootNamespace()
+    protected function getExternalRootNamespaces()
     {
-        $externalRootException = new \ReflectionClass('\Granam\Scalar\ScalarInterface');
+        $externalRootReflection = new \ReflectionClass('\Granam\Scalar\ScalarInterface');
 
-        return $externalRootException->getNamespaceName();
+        return $externalRootReflection->getNamespaceName();
     }
 }
