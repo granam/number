@@ -13,17 +13,6 @@ abstract class ICanUseItSameWayAsUsing extends \PHPUnit_Framework_TestCase
             $this->extractParametersDetails($toNumberParameters),
             $this->extractParametersDetails($numberConstructor)
         );
-        foreach ($numberConstructor as $index => $constructorParameter) {
-            $toNumberParameter = $toNumberParameters[$index];
-            self::assertEquals($toNumberParameter, $constructorParameter);
-            self::assertSame($toNumberParameter->isOptional(), $constructorParameter->isOptional());
-            self::assertSame($toNumberParameter->allowsNull(), $constructorParameter->allowsNull());
-            self::assertSame($toNumberParameter->isDefaultValueAvailable(), $constructorParameter->isDefaultValueAvailable());
-            if ($constructorParameter->isDefaultValueAvailable()) {
-                self::assertSame($toNumberParameter->getDefaultValue(), $constructorParameter->getDefaultValue());
-            }
-            self::assertSame($toNumberParameter->getName(), $constructorParameter->getName());
-        }
     }
 
     /**
