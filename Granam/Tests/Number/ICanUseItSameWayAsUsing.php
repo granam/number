@@ -9,7 +9,10 @@ abstract class ICanUseItSameWayAsUsing extends \PHPUnit_Framework_TestCase
         $numberConstructor = $numberObjectReflection->getConstructor()->getParameters();
         $toNumberClassReflection = new \ReflectionClass('\Granam\Number\Tools\ToNumber');
         $toNumberParameters = $toNumberClassReflection->getMethod('toNumber')->getParameters();
-        self::assertEquals($toNumberParameters, $numberConstructor);
+        self::assertEquals(
+            $this->extractParametersDetails($toNumberParameters),
+            $this->extractParametersDetails($numberConstructor)
+        );
         foreach ($numberConstructor as $index => $constructorParameter) {
             $toNumberParameter = $toNumberParameters[$index];
             self::assertEquals($toNumberParameter, $constructorParameter);
@@ -21,6 +24,30 @@ abstract class ICanUseItSameWayAsUsing extends \PHPUnit_Framework_TestCase
             }
             self::assertSame($toNumberParameter->getName(), $constructorParameter->getName());
         }
+    }
+
+    /**
+     * @param array|\ReflectionParameter[] $parameterReflections
+     * @return array
+     */
+    private function extractParametersDetails(array $parameterReflections)
+    {
+        $extracted = [];
+        foreach ($parameterReflections as $parameterReflection) {
+            $extractedParameter = [];
+            foreach (get_class_methods($parameterReflection) as $methodName) {
+                if (in_array($methodName, ['getName', 'isPassedByReference', 'canBePassedByValue', 'isArray',
+                        'isCallable', 'allowsNull', 'getPosition', 'isOptional', 'isDefaultValueAvailable',
+                        'getDefaultValue', 'isVariadic'], true)
+                    && ($methodName !== 'getDefaultValue' || $parameterReflection->isDefaultValueAvailable())
+                ) {
+                    $extractedParameter[$methodName] = $parameterReflection->$methodName();
+                }
+            }
+            $extracted[] = $extractedParameter;
+        }
+
+        return $extracted;
     }
 
     protected function assertUsableWithJustValueParameter($sutClass, $testedMethod)
