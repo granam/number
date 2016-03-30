@@ -259,7 +259,7 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
      * @dataProvider provideParanoia
      * @param bool $paranoid
      */
-    public function I_get_number_without_leading_non_zero_trash_if_not_strict($paranoid)
+    public function I_get_number_without_tailing_non_zero_trash_if_not_strict($paranoid)
     {
         $trashAround = new NumberObject($trashWrappedNumber = '   123456.0051500  foo bar 12565.04181 ', false /* not strict */, $paranoid);
         self::assertSame(123456.00515, $trashAround->getValue());
@@ -270,10 +270,18 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
      * @test
      * @expectedException \Granam\Number\Tools\Exceptions\WrongParameterType
      */
-    public function I_can_not_use_value_with_leading_non_zer_trash_by_default()
+    public function I_can_not_use_value_with_trailing_non_zero_trash_by_default()
     {
-        new NumberObject($trashWrappedNumber = '   123456.0051500  foo bar 12565.04181 ');
+        new NumberObject($trashWrappedNumber = '123456.0051500  foo bar 12565.04181 ');
+    }
 
+    /**
+     * @test
+     */
+    public function I_can_use_value_wrapped_by_white_characters()
+    {
+        $numberObject = new NumberObject($trashWrappedNumber = " \n\t\r\r 123456.0051500 \t\t\n\r\r  ");
+        self::assertSame(123456.0051500, $numberObject->getValue());
     }
 
     /**
