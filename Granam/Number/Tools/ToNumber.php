@@ -27,7 +27,7 @@ class ToNumber
         }
 
         try {
-            $stringValue = trim(ToString::toString($value));
+            $stringValue = trim(ToString::toString($value, $strict));
         } catch (\Granam\Scalar\Tools\Exceptions\WrongParameterType $exception) {
             throw new Exceptions\WrongParameterType($exception->getMessage(), $exception->getCode(), $exception);
         }
