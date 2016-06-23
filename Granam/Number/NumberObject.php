@@ -26,6 +26,7 @@ class NumberObject extends Scalar implements NumberInterface
      * @param mixed $value
      * @param bool $strict = false Accepts only explicit values, no null or empty string
      * @param bool $paranoid = false Throws exception if some value is lost on cast because of rounding
+     * @throws \Granam\Scalar\Tools\Exceptions\WrongParameterType
      */
     public function __construct($value, $strict = true, $paranoid = false)
     {
