@@ -10,8 +10,8 @@ class ToNumber
      * @param $value
      * @param bool $strict = true allows only explicit values, not null and empty string
      * @param bool $paranoid = false raises an exception if some value is lost on cast due to rounding on cast
-     *
      * @return float|int
+     * @throws \Granam\Number\Tools\Exceptions\WrongParameterType
      */
     public static function toNumber($value, $strict = true, $paranoid = false)
     {
