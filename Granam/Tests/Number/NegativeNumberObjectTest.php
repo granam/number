@@ -1,7 +1,6 @@
 <?php
 namespace Granam\Tests\Number;
 
-use Granam\Number\NegativeNumber;
 use Granam\Number\NegativeNumberObject;
 use Granam\Number\NumberObject;
 
@@ -14,18 +13,18 @@ class NegativeNumberObjectTest extends \PHPUnit_Framework_TestCase
     {
         $minusOne = new NegativeNumberObject(-1);
         self::assertSame(-1, $minusOne->getValue());
-        self::assertInstanceOf(NumberObject::class, $minusOne);
-        self::assertInstanceOf(NegativeNumber::class, $minusOne);
+        self::assertInstanceOf(NumberObject::getClass(), $minusOne);
+        self::assertInstanceOf('\Granam\Number\NegativeNumber', $minusOne);
 
         $floatMinusOne = new NegativeNumberObject(-1.0);
         self::assertSame(-1.0, $floatMinusOne->getValue());
-        self::assertInstanceOf(NumberObject::class, $floatMinusOne);
-        self::assertInstanceOf(NegativeNumber::class, $floatMinusOne);
+        self::assertInstanceOf(NumberObject::getClass(), $floatMinusOne);
+        self::assertInstanceOf('\Granam\Number\NegativeNumber', $floatMinusOne);
 
         $zero = new NegativeNumberObject(0.00);
         self::assertSame(0.0, $zero->getValue());
-        self::assertInstanceOf(NumberObject::class, $zero);
-        self::assertInstanceOf(NegativeNumber::class, $zero);
+        self::assertInstanceOf(NumberObject::getClass(), $zero);
+        self::assertInstanceOf('\Granam\Number\NegativeNumber', $zero);
     }
 
     /**
