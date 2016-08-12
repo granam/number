@@ -29,7 +29,7 @@ class NegativeNumberObjectTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \Granam\Number\Exceptions\NegativeNumberCanNotBePositive
+     * @expectedException \Granam\Number\Tools\Exceptions\NegativeNumberCanNotBePositive
      * @expectedExceptionMessageRegExp ~\s0[.]01~
      */
     public function I_can_not_create_it_positive()

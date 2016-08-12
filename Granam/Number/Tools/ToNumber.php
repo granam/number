@@ -65,4 +65,40 @@ class ToNumber
             );
         }
     }
+
+    /**
+     * @param $value
+     * @return float|int
+     * @throws \Granam\Number\Tools\Exceptions\PositiveNumberCanNotBeNegative
+     * @throws \Granam\Number\Tools\Exceptions\WrongParameterType
+     */
+    public static function toPositiveNumber($value)
+    {
+        $positive = static::toNumber($value);
+        if ($positive < 0) {
+            throw new Exceptions\PositiveNumberCanNotBeNegative(
+                'Expected positive number, got ' . ValueDescriber::describe($value)
+            );
+        }
+
+        return $positive;
+    }
+
+    /**
+     * @param $value
+     * @return float|int
+     * @throws \Granam\Number\Tools\Exceptions\NegativeNumberCanNotBePositive
+     * @throws \Granam\Number\Tools\Exceptions\WrongParameterType
+     */
+    public static function toNegativeNumber($value)
+    {
+        $positive = static::toNumber($value);
+        if ($positive > 0) {
+            throw new Exceptions\NegativeNumberCanNotBePositive(
+                'Expected positive number, got ' . ValueDescriber::describe($value)
+            );
+        }
+
+        return $positive;
+    }
 }

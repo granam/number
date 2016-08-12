@@ -56,4 +56,55 @@ class ToNumberTest extends ICanUseItSameWayAsUsing
     {
         self::assertSame(123, ToNumber::toNumber(new NumberObject(123)));
     }
+
+    /**
+     * @test
+     */
+    public function I_can_require_negative_number()
+    {
+        self::assertSame(-456, ToNumber::toNegativeNumber(-456));
+
+    }
+
+    /**
+     * @test
+     */
+    public function I_can_get_zero_as_negative_number()
+    {
+        self::assertSame(0.0, ToNumber::toNegativeNumber(0.0));
+    }
+
+    /**
+     * @test
+     * @expectedException \Granam\Number\Tools\Exceptions\NegativeNumberCanNotBePositive
+     */
+    public function I_can_not_use_positive_number_as_negative()
+    {
+        ToNumber::toNegativeNumber(0.1);
+    }
+
+    /**
+     * @test
+     */
+    public function I_can_require_positive_number()
+    {
+        self::assertSame(45.67, ToNumber::toPositiveNumber(45.67));
+    }
+
+    /**
+     * @test
+     */
+    public function I_can_get_zero_as_positive_number()
+    {
+        self::assertSame(0.0, ToNumber::toPositiveNumber(0.0));
+    }
+
+    /**
+     * @test
+     * @expectedException \Granam\Number\Tools\Exceptions\PositiveNumberCanNotBeNegative
+     */
+    public function I_can_not_use_negative_number_as_positive()
+    {
+        ToNumber::toPositiveNumber(-0.001);
+    }
 }
