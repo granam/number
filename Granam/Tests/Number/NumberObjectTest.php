@@ -302,6 +302,34 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
         self::fail('Paranoid test failed'); // should never reach it because of previous exception
     }
 
+    /**
+     * @test
+     */
+    public function I_can_create_new_number_by_adding_value()
+    {
+        $number = new NumberObject(123);
+        $increased = $number->add(456);
+        self::assertSame(123, $number->getValue());
+        self::assertSame(579, $increased->getValue());
+        self::assertNotEquals($number, $increased);
+        $increasedMore = $increased->add($number);
+        self::assertSame(702, $increasedMore->getValue());
+    }
+
+    /**
+     * @test
+     */
+    public function I_can_create_new_number_by_subtracting_value()
+    {
+        $number = new NumberObject(123);
+        $decreased = $number->sub(456);
+        self::assertSame(123, $number->getValue());
+        self::assertSame(-333, $decreased->getValue());
+        self::assertNotEquals($number, $decreased);
+        $decreasedMore = $decreased->sub($decreased); // minus minus
+        self::assertSame(0, $decreasedMore->getValue());
+    }
+
 }
 
 /** inner */
