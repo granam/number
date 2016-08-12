@@ -33,7 +33,6 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
         self::assertNotNull($numberObject);
         self::assertInstanceOf('Granam\Number\NumberInterface', $numberObject);
         self::assertSame("$value", "$numberObject");
-        self::assertEquals($numberObject, $this->createByFactoryMethod($value, $strict, $paranoid));
     }
 
     public function provideStrictnessAndParanoia()
@@ -46,18 +45,6 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
         ];
     }
 
-    private function createByFactoryMethod($value, $strict, $paranoid)
-    {
-        if (!$strict && !$paranoid) {
-            return NumberObject::createTolerant($value);
-        }
-        if (!$strict && $paranoid) {
-            return NumberObject::createParanoid($value);
-        }
-
-        return NumberObject::createStrictAndParanoid($value);
-    }
-
     /**
      * @test
      * @dataProvider provideStrictnessAndParanoia
@@ -68,7 +55,6 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
     {
         $numberObject = new NumberObject($value = 123.456, $strict, $paranoid);
         self::assertSame($value, $numberObject->getValue());
-        self::assertEquals($numberObject, $this->createByFactoryMethod($value, $strict, $paranoid));
     }
 
     /**
@@ -81,11 +67,9 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
     {
         $withInteger = new NumberObject($integer = 123, $strict, $paranoid);
         self::assertSame($integer, $withInteger->getValue());
-        self::assertEquals($withInteger, $this->createByFactoryMethod($integer, $strict, $paranoid));
         $withStringInteger = new NumberObject($stringInteger = '456', $strict, $paranoid);
         self::assertSame((int)$stringInteger, $withStringInteger->getValue());
         self::assertSame("$stringInteger", "$withStringInteger");
-        self::assertEquals($withStringInteger, $this->createByFactoryMethod($stringInteger, $strict, $paranoid));
     }
 
     /**
@@ -99,7 +83,6 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
         $numberObject = new NumberObject($value = false, $strict, $paranoid);
         self::assertSame(0, $numberObject->getValue());
         self::assertSame((int)false, $numberObject->getValue());
-        self::assertEquals($numberObject, $this->createByFactoryMethod($value, $strict, $paranoid));
     }
 
     /**
@@ -113,7 +96,6 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
         $numberObject = new NumberObject($value = true, $strict, $paranoid);
         self::assertSame(1, $numberObject->getValue());
         self::assertSame((int)true, $numberObject->getValue());
-        self::assertEquals($numberObject, $this->createByFactoryMethod($value, $strict, $paranoid));
     }
 
     /**
@@ -136,7 +118,6 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
         $numberObject = new NumberObject($value = null, false /* not strict */, $paranoid);
         self::assertSame(0, $numberObject->getValue());
         self::assertSame((int)null, $numberObject->getValue());
-        self::assertEquals($numberObject, $this->createByFactoryMethod($value, false /* not strict */, $paranoid));
     }
 
     public function provideParanoia()
@@ -193,16 +174,12 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
     {
         $floatNumberObject = new NumberObject(new TestWithToString($floatValue = 123.456), $strict, $paranoid);
         self::assertSame($floatValue, $floatNumberObject->getValue());
-        self::assertEquals($floatNumberObject, $this->createByFactoryMethod($floatValue, $strict, $paranoid));
         $integerNumberObject = new NumberObject(new TestWithToString($integerValue = 789), $strict, $paranoid);
         self::assertSame($integerValue, $integerNumberObject->getValue());
-        self::assertEquals($integerNumberObject, $this->createByFactoryMethod($integerValue, $strict, $paranoid));
         $stringAsFloatNumberObject = new NumberObject(new TestWithToString($stringFloat = '987.654'), $strict, $paranoid);
         self::assertSame((float)$stringFloat, $stringAsFloatNumberObject->getValue());
-        self::assertEquals($stringAsFloatNumberObject, $this->createByFactoryMethod($stringFloat, $strict, $paranoid));
         $stringAsIntegerNumberObject = new NumberObject(new TestWithToString($stringInteger = '7890'), $strict, $paranoid);
         self::assertSame((int)$stringInteger, $stringAsIntegerNumberObject->getValue());
-        self::assertEquals($stringAsIntegerNumberObject, $this->createByFactoryMethod($stringInteger, $strict, $paranoid));
     }
 
     /**
