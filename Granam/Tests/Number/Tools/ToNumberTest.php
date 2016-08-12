@@ -1,6 +1,7 @@
 <?php
 namespace Granam\Tests\Number\Tools;
 
+use Granam\Number\NumberObject;
 use Granam\Number\Tools\ToNumber;
 use Granam\Tests\Number\ICanUseItSameWayAsUsing;
 
@@ -46,5 +47,13 @@ class ToNumberTest extends ICanUseItSameWayAsUsing
     public function I_can_use_null_as_integer_zero_if_not_strict()
     {
         self::assertSame(0, ToNumber::toNumber(null, false /* not strict */));
+    }
+
+    /**
+     * @test
+     */
+    public function I_can_convert_even_number_object_to_number()
+    {
+        self::assertSame(123, ToNumber::toNumber(new NumberObject(123)));
     }
 }
