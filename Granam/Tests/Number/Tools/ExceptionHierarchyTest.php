@@ -13,7 +13,7 @@ class ExceptionHierarchyTest extends AbstractExceptionsHierarchyTest
 
     protected function getRootNamespace()
     {
-        $rootReflection = new \ReflectionClass(NumberObject::getClass());
+        $rootReflection = new \ReflectionClass(NumberObject::class);
 
         return $rootReflection->getNamespaceName();
     }

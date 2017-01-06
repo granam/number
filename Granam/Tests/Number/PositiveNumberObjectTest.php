@@ -13,17 +13,17 @@ class PositiveNumberObjectTest extends \PHPUnit_Framework_TestCase
     {
         $twentyFive = new PositiveNumberObject(25);
         self::assertSame(25, $twentyFive->getValue());
-        self::assertInstanceOf(NumberObject::getClass(), $twentyFive);
+        self::assertInstanceOf(NumberObject::class, $twentyFive);
         self::assertInstanceOf('\Granam\Number\PositiveNumber', $twentyFive);
 
         $twoHundredths = new PositiveNumberObject(0.02);
         self::assertSame(0.02, $twoHundredths->getValue());
-        self::assertInstanceOf(NumberObject::getClass(), $twoHundredths);
+        self::assertInstanceOf(NumberObject::class, $twoHundredths);
         self::assertInstanceOf('\Granam\Number\PositiveNumber', $twoHundredths);
 
         $zero = new PositiveNumberObject(-0.00);
         self::assertSame(0.0, $zero->getValue());
-        self::assertInstanceOf(NumberObject::getClass(), $zero);
+        self::assertInstanceOf(NumberObject::class, $zero);
         self::assertInstanceOf('\Granam\Number\PositiveNumber', $zero);
     }
 
