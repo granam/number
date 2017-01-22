@@ -23,7 +23,7 @@
     }
   },
   "require": {
-    "php": ">=5.5",
+    "php": ">=5.6",
     "granam/scalar": "dev-master",
     "granam/exception-hierarchy": "dev-master"
   },
