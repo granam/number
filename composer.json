@@ -24,7 +24,7 @@
   },
   "require": {
     "php": ">=5.6",
-    "granam/scalar": "^1.1",
+    "granam/scalar": "^2.0",
     "granam/tools": "^1.0"
   },
   "require-dev": {
