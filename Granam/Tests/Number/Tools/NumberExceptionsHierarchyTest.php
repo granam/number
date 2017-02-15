@@ -2,9 +2,10 @@
 namespace Granam\Tests\Number\Tools;
 
 use Granam\Number\NumberObject;
-use Granam\Tests\Exceptions\Tools\AbstractExceptionsHierarchyTest;
+use Granam\Scalar\ScalarInterface;
+use Granam\Tests\ExceptionsHierarchy\Exceptions\AbstractExceptionsHierarchyTest;
 
-class ExceptionHierarchyTest extends AbstractExceptionsHierarchyTest
+class NumberExceptionsHierarchyTest extends AbstractExceptionsHierarchyTest
 {
     protected function getTestedNamespace()
     {
@@ -20,7 +21,7 @@ class ExceptionHierarchyTest extends AbstractExceptionsHierarchyTest
 
     protected function getExternalRootNamespaces()
     {
-        $externalRootException = new \ReflectionClass('\Granam\Scalar\ScalarInterface');
+        $externalRootException = new \ReflectionClass(ScalarInterface::class);
 
         return $externalRootException->getNamespaceName();
     }
