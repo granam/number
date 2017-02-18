@@ -2,6 +2,7 @@
 namespace Granam\Tests\Number;
 
 use Granam\Number\NumberObject;
+use Granam\Number\NumberInterface;
 
 class NumberObjectTest extends ICanUseItSameWayAsUsing
 {
@@ -10,7 +11,7 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
      */
     public function I_can_use_it_just_with_value_parameter()
     {
-        $this->assertUsableWithJustValueParameter('\Granam\Number\NumberObject', '__construct');
+        $this->assertUsableWithJustValueParameter(NumberObject::class, '__construct');
     }
 
     /**
@@ -31,7 +32,7 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
     {
         $numberObject = new NumberObject($value = 123.456, $strict, $paranoid);
         self::assertNotNull($numberObject);
-        self::assertInstanceOf('Granam\Number\NumberInterface', $numberObject);
+        self::assertInstanceOf(NumberInterface::class, $numberObject);
         self::assertSame("$value", "$numberObject");
     }
 

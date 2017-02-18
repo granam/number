@@ -4,8 +4,9 @@ namespace Granam\Tests\Number;
 use Granam\Number\NegativeNumber;
 use Granam\Number\NegativeNumberObject;
 use Granam\Number\NumberObject;
+use PHPUnit\Framework\TestCase;
 
-class NegativeNumberObjectTest extends \PHPUnit_Framework_TestCase
+class NegativeNumberObjectTest extends TestCase
 {
     /**
      * @test

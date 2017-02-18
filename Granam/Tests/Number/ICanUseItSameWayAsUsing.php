@@ -1,13 +1,17 @@
 <?php
 namespace Granam\Tests\Number;
 
-abstract class ICanUseItSameWayAsUsing extends \PHPUnit_Framework_TestCase
+use Granam\Number\Tools\ToNumber;
+use Granam\Number\NumberObject;
+use PHPUnit\Framework\TestCase;
+
+abstract class ICanUseItSameWayAsUsing extends TestCase
 {
     protected function I_can_create_it_same_way_as_using()
     {
-        $numberObjectReflection = new \ReflectionClass('\Granam\Number\NumberObject');
+        $numberObjectReflection = new \ReflectionClass(NumberObject::class);
         $numberConstructor = $numberObjectReflection->getConstructor()->getParameters();
-        $toNumberClassReflection = new \ReflectionClass('\Granam\Number\Tools\ToNumber');
+        $toNumberClassReflection = new \ReflectionClass(ToNumber::class);
         $toNumberParameters = $toNumberClassReflection->getMethod('toNumber')->getParameters();
         self::assertEquals(
             $this->extractParametersDetails($toNumberParameters),

@@ -12,7 +12,7 @@ class ToNumberTest extends ICanUseItSameWayAsUsing
      */
     public function I_can_use_it_just_with_value_parameter()
     {
-        $this->assertUsableWithJustValueParameter('\Granam\Number\Tools\ToNumber', 'toNumber');
+        $this->assertUsableWithJustValueParameter(ToNumber::class, 'toNumber');
     }
 
     /**

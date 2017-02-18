@@ -3,8 +3,10 @@ namespace Granam\Tests\Number;
 
 use Granam\Number\PositiveNumberObject;
 use Granam\Number\NumberObject;
+use Granam\Number\PositiveNumber;
+use PHPUnit\Framework\TestCase;
 
-class PositiveNumberObjectTest extends \PHPUnit_Framework_TestCase
+class PositiveNumberObjectTest extends TestCase
 {
     /**
      * @test
@@ -14,17 +16,17 @@ class PositiveNumberObjectTest extends \PHPUnit_Framework_TestCase
         $twentyFive = new PositiveNumberObject(25);
         self::assertSame(25, $twentyFive->getValue());
         self::assertInstanceOf(NumberObject::class, $twentyFive);
-        self::assertInstanceOf('\Granam\Number\PositiveNumber', $twentyFive);
+        self::assertInstanceOf(PositiveNumber::class, $twentyFive);
 
         $twoHundredths = new PositiveNumberObject(0.02);
         self::assertSame(0.02, $twoHundredths->getValue());
         self::assertInstanceOf(NumberObject::class, $twoHundredths);
-        self::assertInstanceOf('\Granam\Number\PositiveNumber', $twoHundredths);
+        self::assertInstanceOf(PositiveNumber::class, $twoHundredths);
 
         $zero = new PositiveNumberObject(-0.00);
         self::assertSame(0.0, $zero->getValue());
         self::assertInstanceOf(NumberObject::class, $zero);
-        self::assertInstanceOf('\Granam\Number\PositiveNumber', $zero);
+        self::assertInstanceOf(PositiveNumber::class, $zero);
     }
 
     /**

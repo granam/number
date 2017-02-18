@@ -30,7 +30,7 @@ class NumberObject extends Scalar implements NumberInterface
 
     /**
      * @param int|float|NumberInterface $value
-     * @return NumberInterface
+     * @return NumberObject
      * @throws \Granam\Number\Tools\Exceptions\WrongParameterType
      * @throws \Granam\Scalar\Tools\Exceptions\WrongParameterType
      */
@@ -46,7 +46,7 @@ class NumberObject extends Scalar implements NumberInterface
 
     /**
      * @param int|float|NumberInterface $value
-     * @return NumberInterface
+     * @return NumberObject
      * @throws \Granam\Number\Tools\Exceptions\WrongParameterType
      * @throws \Granam\Scalar\Tools\Exceptions\WrongParameterType
      */
