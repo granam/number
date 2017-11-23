@@ -3,9 +3,9 @@ namespace Granam\Tests\Number;
 
 use Granam\Number\Tools\ToNumber;
 use Granam\Number\NumberObject;
-use PHPUnit\Framework\TestCase;
+use Granam\Tests\Tools\TestWithMockery;
 
-abstract class ICanUseItSameWayAsUsing extends TestCase
+abstract class ICanUseItSameWayAsUsing extends TestWithMockery
 {
     protected function I_can_create_it_same_way_as_using()
     {
@@ -15,7 +15,8 @@ abstract class ICanUseItSameWayAsUsing extends TestCase
         $toNumberParameters = $toNumberClassReflection->getMethod('toNumber')->getParameters();
         self::assertEquals(
             $this->extractParametersDetails($toNumberParameters),
-            $this->extractParametersDetails($numberConstructor)
+            $this->extractParametersDetails($numberConstructor),
+            'Method ' .ToNumber::class . '::toNumber si called differently than constructor of ' . NumberObject::class
         );
     }
 
@@ -23,15 +24,15 @@ abstract class ICanUseItSameWayAsUsing extends TestCase
      * @param array|\ReflectionParameter[] $parameterReflections
      * @return array
      */
-    private function extractParametersDetails(array $parameterReflections)
+    private function extractParametersDetails(array $parameterReflections): array
     {
         $extracted = [];
         foreach ($parameterReflections as $parameterReflection) {
             $extractedParameter = [];
             foreach (get_class_methods($parameterReflection) as $methodName) {
-                if (in_array($methodName, ['getName', 'isPassedByReference', 'canBePassedByValue', 'isArray',
+                if (\in_array($methodName, ['getName', 'isPassedByReference', 'canBePassedByValue', 'isArray',
                         'isCallable', 'allowsNull', 'getPosition', 'isOptional', 'isDefaultValueAvailable',
-                        'getDefaultValue', 'isVariadic'], true)
+                        'getDefaultValue', 'isVariadic', 'hasType', 'getType'], true)
                     && ($methodName !== 'getDefaultValue' || $parameterReflection->isDefaultValueAvailable())
                 ) {
                     $extractedParameter[$methodName] = $parameterReflection->$methodName();

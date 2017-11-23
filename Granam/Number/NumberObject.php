@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1); // on PHP 7+ are standard PHP methods strict to types of given parameters
+
 namespace Granam\Number;
 
 use Granam\Number\Tools\ToNumber;
@@ -21,10 +23,10 @@ class NumberObject extends Scalar implements NumberInterface
      * @param bool $paranoid = false Throws exception if some value is lost on cast because of rounding
      * @throws \Granam\Scalar\Tools\Exceptions\WrongParameterType
      */
-    public function __construct($value, $strict = true, $paranoid = false)
+    public function __construct($value, bool $strict = true, bool $paranoid = false)
     {
-        $this->strict = (bool)$strict;
-        $this->paranoid = (bool)$paranoid;
+        $this->strict = $strict;
+        $this->paranoid = $paranoid;
         parent::__construct(ToNumber::toNumber($value, $this->strict, $this->paranoid));
     }
 
@@ -34,7 +36,7 @@ class NumberObject extends Scalar implements NumberInterface
      * @throws \Granam\Number\Tools\Exceptions\WrongParameterType
      * @throws \Granam\Scalar\Tools\Exceptions\WrongParameterType
      */
-    public function add($value)
+    public function add($value): NumberObject
     {
         return new static(
             $this->getValue()
@@ -50,7 +52,7 @@ class NumberObject extends Scalar implements NumberInterface
      * @throws \Granam\Number\Tools\Exceptions\WrongParameterType
      * @throws \Granam\Scalar\Tools\Exceptions\WrongParameterType
      */
-    public function sub($value)
+    public function sub($value): NumberObject
     {
         return new static(
             $this->getValue()

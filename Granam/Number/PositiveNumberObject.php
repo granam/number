@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1); // on PHP 7+ are standard PHP methods strict to types of given parameters
+
 namespace Granam\Number;
 
 use Granam\Number\Tools\ToNumber;
@@ -13,7 +15,7 @@ class PositiveNumberObject extends NumberObject implements PositiveNumber
      * @throws \Granam\Number\Tools\Exceptions\WrongParameterType
      * @throws \Granam\Number\Tools\Exceptions\PositiveNumberCanNotBeNegative
      */
-    public function __construct($value, $strict = true, $paranoid = false)
+    public function __construct($value, bool $strict = true, bool $paranoid = false)
     {
         parent::__construct(ToNumber::toPositiveNumber($value), $strict, $paranoid);
     }

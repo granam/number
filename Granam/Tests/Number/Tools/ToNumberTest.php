@@ -1,6 +1,7 @@
 <?php
 namespace Granam\Tests\Number\Tools;
 
+use Granam\Number\NumberInterface;
 use Granam\Number\NumberObject;
 use Granam\Number\Tools\ToNumber;
 use Granam\Tests\Number\ICanUseItSameWayAsUsing;
@@ -106,5 +107,18 @@ class ToNumberTest extends ICanUseItSameWayAsUsing
     public function I_can_not_use_negative_number_as_positive()
     {
         ToNumber::toPositiveNumber(-0.001);
+    }
+
+    /**
+     * @test
+     */
+    public function I_can_convert_number_object_even_if_gives_non_number_as_string()
+    {
+        $numberObject = $this->mockery(NumberInterface::class);
+        $numberObject->shouldReceive('__toString')
+            ->andReturn('123.456 foo');
+        $numberObject->shouldReceive('getValue')
+            ->andReturn(123.456);
+        self::assertSame(123.456, ToNumber::toNumber($numberObject));
     }
 }
