@@ -2,12 +2,10 @@
 
 [![Build Status](https://travis-ci.org/jaroslavtyc/granam-number.svg?branch=master)](https://travis-ci.org/jaroslavtyc/granam-number)
 
-Note: requires PHP 5.4+
-
 ```php
 <?php
-use Granam\NumberObject\NumberObject;
-use Granam\NumberObject\Exceptions\WrongParameterType;
+use Granam\Number\NumberObject;
+use \Granam\Number\Tools\Exceptions\WrongParameterType;
 
 $stringFloatToNumber = new NumberObject('123.456');
 var_dump($stringFloatToNumber->getValue()); // double(123.456)
