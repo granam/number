@@ -21,6 +21,7 @@ class NumberObject extends Scalar implements NumberInterface
      * @param mixed $value
      * @param bool $strict = false Accepts only explicit values, no null or empty string
      * @param bool $paranoid = false Throws exception if some value is lost on cast because of rounding
+     * @throws \Granam\Number\Tools\Exceptions\ValueLostOnCast
      * @throws \Granam\Scalar\Tools\Exceptions\WrongParameterType
      */
     public function __construct($value, bool $strict = true, bool $paranoid = false)
@@ -33,6 +34,7 @@ class NumberObject extends Scalar implements NumberInterface
     /**
      * @param int|float|NumberInterface $value
      * @return NumberObject
+     * @throws \Granam\Number\Tools\Exceptions\ValueLostOnCast
      * @throws \Granam\Number\Tools\Exceptions\WrongParameterType
      * @throws \Granam\Scalar\Tools\Exceptions\WrongParameterType
      */
@@ -49,6 +51,7 @@ class NumberObject extends Scalar implements NumberInterface
     /**
      * @param int|float|NumberInterface $value
      * @return NumberObject
+     * @throws \Granam\Number\Tools\Exceptions\ValueLostOnCast
      * @throws \Granam\Number\Tools\Exceptions\WrongParameterType
      * @throws \Granam\Scalar\Tools\Exceptions\WrongParameterType
      */

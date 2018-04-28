@@ -16,6 +16,7 @@ class ToNumber extends StrictObject
      * @param bool $paranoid = false raises an exception if some value is lost on cast due to rounding on cast
      * @return float|int
      * @throws \Granam\Number\Tools\Exceptions\WrongParameterType
+     * @throws \Granam\Number\Tools\Exceptions\ValueLostOnCast
      */
     public static function toNumber($value, bool $strict = true, bool $paranoid = false)
     {
@@ -59,6 +60,11 @@ class ToNumber extends StrictObject
         return $floatValue;
     }
 
+    /**
+     * @param float $floatValue
+     * @param string $stringValue
+     * @throws \Granam\Number\Tools\Exceptions\ValueLostOnCast
+     */
     private static function checkIfNoValueHasBeenLostByCast(float $floatValue, string $stringValue): void
     {
         $numericPart = '0';
@@ -66,7 +72,7 @@ class ToNumber extends StrictObject
             $numericPart = $numericParts['numericPart'];
         }
 
-        if ("$floatValue" !== $numericPart) { // some value has been lost
+        if ((string)$floatValue !== $numericPart) { // some value has been lost
             throw new Exceptions\ValueLostOnCast(
                 'Some value has been lost on cast. Given string-number '
                 . \var_export($numericPart, true) . ' results into float ' . \var_export($floatValue, true)
@@ -77,6 +83,7 @@ class ToNumber extends StrictObject
     /**
      * @param $value
      * @return float|int
+     * @throws \Granam\Number\Tools\Exceptions\ValueLostOnCast
      * @throws \Granam\Number\Tools\Exceptions\PositiveNumberCanNotBeNegative
      * @throws \Granam\Number\Tools\Exceptions\WrongParameterType
      */
@@ -95,6 +102,7 @@ class ToNumber extends StrictObject
     /**
      * @param $value
      * @return float|int
+     * @throws \Granam\Number\Tools\Exceptions\ValueLostOnCast
      * @throws \Granam\Number\Tools\Exceptions\NegativeNumberCanNotBePositive
      * @throws \Granam\Number\Tools\Exceptions\WrongParameterType
      */
