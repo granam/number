@@ -12,6 +12,23 @@ class ToNumber extends StrictObject
 {
     /**
      * @param mixed $value
+     * @param bool $strict = true allows only explicit values, empty string or null (remains null)
+     * @param bool $paranoid = false raises an exception if some value is lost on cast due to rounding on cast
+     * @return float|int|null
+     * @throws \Granam\Number\Tools\Exceptions\WrongParameterType
+     * @throws \Granam\Number\Tools\Exceptions\ValueLostOnCast
+     */
+    public static function toNumberOrNull($value, bool $strict = true, bool $paranoid = false)
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        return static::toNumber($value, $strict, $paranoid);
+    }
+
+    /**
+     * @param mixed $value
      * @param bool $strict = true allows only explicit values, not null and empty string
      * @param bool $paranoid = false raises an exception if some value is lost on cast due to rounding on cast
      * @return float|int
@@ -81,15 +98,34 @@ class ToNumber extends StrictObject
     }
 
     /**
+     * @param mixed $value
+     * @param bool $strict = true allows only explicit values, empty string or null (remains null)
+     * @param bool $paranoid = false raises an exception if some value is lost on cast due to rounding on cast
+     * @return float|int|null
+     * @throws \Granam\Number\Tools\Exceptions\WrongParameterType
+     * @throws \Granam\Number\Tools\Exceptions\ValueLostOnCast
+     */
+    public static function toPositiveNumberOrNull($value, bool $strict = true, bool $paranoid = false)
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        return static::toPositiveNumber($value, $strict, $paranoid);
+    }
+
+    /**
      * @param $value
+     * @param bool $strict = true allows only explicit values, not null and empty string
+     * @param bool $paranoid = false raises an exception if some value is lost on cast due to rounding on cast
      * @return float|int
      * @throws \Granam\Number\Tools\Exceptions\ValueLostOnCast
      * @throws \Granam\Number\Tools\Exceptions\PositiveNumberCanNotBeNegative
      * @throws \Granam\Number\Tools\Exceptions\WrongParameterType
      */
-    public static function toPositiveNumber($value)
+    public static function toPositiveNumber($value, bool $strict = true, bool $paranoid = false)
     {
-        $positive = static::toNumber($value);
+        $positive = static::toNumber($value, $strict, $paranoid);
         if ($positive < 0) {
             throw new Exceptions\PositiveNumberCanNotBeNegative(
                 'Expected positive number, got ' . ValueDescriber::describe($value)
@@ -101,14 +137,34 @@ class ToNumber extends StrictObject
 
     /**
      * @param $value
+     * @param bool $strict = true allows only explicit values, not null and empty string
+     * @param bool $paranoid = false raises an exception if some value is lost on cast due to rounding on cast
+     * @return float|int|null
+     * @throws \Granam\Number\Tools\Exceptions\ValueLostOnCast
+     * @throws \Granam\Number\Tools\Exceptions\NegativeNumberCanNotBePositive
+     * @throws \Granam\Number\Tools\Exceptions\WrongParameterType
+     */
+    public static function toNegativeNumberOrNull($value, bool $strict = true, bool $paranoid = false)
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        return static::toNegativeNumber($value, $strict, $paranoid);
+    }
+
+    /**
+     * @param $value
+     * @param bool $strict = true allows only explicit values, not null and empty string
+     * @param bool $paranoid = false raises an exception if some value is lost on cast due to rounding on cast
      * @return float|int
      * @throws \Granam\Number\Tools\Exceptions\ValueLostOnCast
      * @throws \Granam\Number\Tools\Exceptions\NegativeNumberCanNotBePositive
      * @throws \Granam\Number\Tools\Exceptions\WrongParameterType
      */
-    public static function toNegativeNumber($value)
+    public static function toNegativeNumber($value, bool $strict = true, bool $paranoid = false)
     {
-        $positive = static::toNumber($value);
+        $positive = static::toNumber($value, $strict, $paranoid);
         if ($positive > 0) {
             throw new Exceptions\NegativeNumberCanNotBePositive(
                 'Expected positive number, got ' . ValueDescriber::describe($value)

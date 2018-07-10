@@ -125,4 +125,31 @@ class ToNumberTest extends ICanUseItSameWayAsUsing
             ->andReturn(123.456);
         self::assertSame(123.456, ToNumber::toNumber($numberObject));
     }
+
+    /**
+     * @test
+     * @dataProvider provideValueOrNull
+     * @param $value
+     * @param int|float|NumberInterface|null $expectedValue
+     */
+    public function I_can_get_number_or_null($value, $expectedValue): void
+    {
+        self::assertSame($expectedValue, ToNumber::toNumberOrNull($value));
+        if ($expectedValue === null || $expectedValue <= 0) {
+            self::assertSame($expectedValue, ToNumber::toNegativeNumberOrNull($value));
+        }
+        if ($expectedValue === null || $expectedValue >= 0) {
+            self::assertSame($expectedValue, ToNumber::toPositiveNumberOrNull($value));
+        }
+    }
+
+    public function provideValueOrNull(): array
+    {
+        return [
+            [null, null],
+            [1, 1],
+            [new NumberObject(-159), -159],
+            ['999.888', 999.888],
+        ];
+    }
 }
