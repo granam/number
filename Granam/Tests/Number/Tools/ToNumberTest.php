@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Granam\Tests\Number\Tools;
 
 use Granam\Number\NumberInterface;
@@ -10,16 +12,18 @@ class ToNumberTest extends ICanUseItSameWayAsUsing
 {
     /**
      * @test
+     * @throws \ReflectionException
      */
-    public function I_can_use_it_just_with_value_parameter()
+    public function I_can_use_it_just_with_value_parameter(): void
     {
         $this->assertUsableWithJustValueParameter(ToNumber::class, 'toNumber');
     }
 
     /**
      * @test
+     * @throws \ReflectionException
      */
-    public function I_can_create_it_same_way_as_using_number_object()
+    public function I_can_create_it_same_way_as_using_number_object(): void
     {
         parent::I_can_create_it_same_way_as_using();
     }
@@ -28,7 +32,7 @@ class ToNumberTest extends ICanUseItSameWayAsUsing
      * @test
      * @expectedException \Granam\Number\Tools\Exceptions\WrongParameterType
      */
-    public function I_can_not_use_null_by_default()
+    public function I_can_not_use_null_by_default(): void
     {
         ToNumber::toNumber(null);
     }
@@ -37,7 +41,7 @@ class ToNumberTest extends ICanUseItSameWayAsUsing
      * @test
      * @expectedException \Granam\Number\Tools\Exceptions\WrongParameterType
      */
-    public function I_can_not_use_null_if_strict()
+    public function I_can_not_use_null_if_strict(): void
     {
         ToNumber::toNumber(null);
     }
@@ -45,7 +49,7 @@ class ToNumberTest extends ICanUseItSameWayAsUsing
     /**
      * @test
      */
-    public function I_can_use_null_as_integer_zero_if_not_strict()
+    public function I_can_use_null_as_integer_zero_if_not_strict(): void
     {
         self::assertSame(0, ToNumber::toNumber(null, false /* not strict */));
     }
@@ -53,7 +57,7 @@ class ToNumberTest extends ICanUseItSameWayAsUsing
     /**
      * @test
      */
-    public function I_can_convert_even_number_object_to_number()
+    public function I_can_convert_even_number_object_to_number(): void
     {
         self::assertSame(123, ToNumber::toNumber(new NumberObject(123)));
     }
@@ -61,7 +65,7 @@ class ToNumberTest extends ICanUseItSameWayAsUsing
     /**
      * @test
      */
-    public function I_can_require_negative_number()
+    public function I_can_require_negative_number(): void
     {
         self::assertSame(-456, ToNumber::toNegativeNumber(-456));
 
@@ -70,7 +74,7 @@ class ToNumberTest extends ICanUseItSameWayAsUsing
     /**
      * @test
      */
-    public function I_can_get_zero_as_negative_number()
+    public function I_can_get_zero_as_negative_number(): void
     {
         self::assertSame(0.0, ToNumber::toNegativeNumber(0.0));
     }
@@ -79,7 +83,7 @@ class ToNumberTest extends ICanUseItSameWayAsUsing
      * @test
      * @expectedException \Granam\Number\Tools\Exceptions\NegativeNumberCanNotBePositive
      */
-    public function I_can_not_use_positive_number_as_negative()
+    public function I_can_not_use_positive_number_as_negative(): void
     {
         ToNumber::toNegativeNumber(0.1);
     }
@@ -87,7 +91,7 @@ class ToNumberTest extends ICanUseItSameWayAsUsing
     /**
      * @test
      */
-    public function I_can_require_positive_number()
+    public function I_can_require_positive_number(): void
     {
         self::assertSame(45.67, ToNumber::toPositiveNumber(45.67));
     }
@@ -95,7 +99,7 @@ class ToNumberTest extends ICanUseItSameWayAsUsing
     /**
      * @test
      */
-    public function I_can_get_zero_as_positive_number()
+    public function I_can_get_zero_as_positive_number(): void
     {
         self::assertSame(0.0, ToNumber::toPositiveNumber(0.0));
     }
@@ -104,7 +108,7 @@ class ToNumberTest extends ICanUseItSameWayAsUsing
      * @test
      * @expectedException \Granam\Number\Tools\Exceptions\PositiveNumberCanNotBeNegative
      */
-    public function I_can_not_use_negative_number_as_positive()
+    public function I_can_not_use_negative_number_as_positive(): void
     {
         ToNumber::toPositiveNumber(-0.001);
     }
@@ -112,7 +116,7 @@ class ToNumberTest extends ICanUseItSameWayAsUsing
     /**
      * @test
      */
-    public function I_can_convert_number_object_even_if_gives_non_number_as_string()
+    public function I_can_convert_number_object_even_if_gives_non_number_as_string(): void
     {
         $numberObject = $this->mockery(NumberInterface::class);
         $numberObject->shouldReceive('__toString')

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Granam\Tests\Number;
 
 use Granam\Number\NumberObject;
@@ -8,16 +10,18 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
 {
     /**
      * @test
+     * @throws \ReflectionException
      */
-    public function I_can_use_it_just_with_value_parameter()
+    public function I_can_use_it_just_with_value_parameter(): void
     {
         $this->assertUsableWithJustValueParameter(NumberObject::class, '__construct');
     }
 
     /**
      * @test
+     * @throws \ReflectionException
      */
-    public function I_can_create_it_same_way_as_using_to_number()
+    public function I_can_create_it_same_way_as_using_to_number(): void
     {
         parent::I_can_create_it_same_way_as_using();
     }
@@ -28,15 +32,15 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
      * @param bool $strict
      * @param bool $paranoid
      */
-    public function I_can_use_it($strict, $paranoid)
+    public function I_can_use_it(bool $strict, bool $paranoid): void
     {
         $numberObject = new NumberObject($value = 123.456, $strict, $paranoid);
         self::assertNotNull($numberObject);
         self::assertInstanceOf(NumberInterface::class, $numberObject);
-        self::assertSame("$value", "$numberObject");
+        self::assertSame((string)$value, (string)$numberObject);
     }
 
-    public function provideStrictnessAndParanoia()
+    public function provideStrictnessAndParanoia(): array
     {
         return [
             [false, false],
@@ -52,7 +56,7 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
      * @param bool $strict
      * @param bool $paranoid
      */
-    public function I_can_get_given_value($strict, $paranoid)
+    public function I_can_get_given_value(bool $strict, bool $paranoid): void
     {
         $numberObject = new NumberObject($value = 123.456, $strict, $paranoid);
         self::assertSame($value, $numberObject->getValue());
@@ -64,13 +68,13 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
      * @param bool $strict
      * @param bool $paranoid
      */
-    public function I_can_use_integer($strict, $paranoid)
+    public function I_can_use_integer(bool $strict, bool $paranoid): void
     {
         $withInteger = new NumberObject($integer = 123, $strict, $paranoid);
         self::assertSame($integer, $withInteger->getValue());
         $withStringInteger = new NumberObject($stringInteger = '456', $strict, $paranoid);
         self::assertSame((int)$stringInteger, $withStringInteger->getValue());
-        self::assertSame("$stringInteger", "$withStringInteger");
+        self::assertSame($stringInteger, (string)$withStringInteger);
     }
 
     /**
@@ -79,7 +83,7 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
      * @param bool $strict
      * @param bool $paranoid
      */
-    public function I_can_use_false_to_get_integer_zero($strict, $paranoid)
+    public function I_can_use_false_to_get_integer_zero(bool $strict, bool $paranoid): void
     {
         $numberObject = new NumberObject($value = false, $strict, $paranoid);
         self::assertSame(0, $numberObject->getValue());
@@ -92,7 +96,7 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
      * @param bool $strict
      * @param bool $paranoid
      */
-    public function I_can_use_true_to_get_integer_one($strict, $paranoid)
+    public function I_can_use_true_to_get_integer_one(bool $strict, bool $paranoid): void
     {
         $numberObject = new NumberObject($value = true, $strict, $paranoid);
         self::assertSame(1, $numberObject->getValue());
@@ -104,7 +108,7 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
      * @expectedException \Granam\Number\Tools\Exceptions\WrongParameterType
      * @expectedExceptionMessageRegExp ~got NULL~
      */
-    public function I_can_not_use_null_by_default()
+    public function I_can_not_use_null_by_default(): void
     {
         new NumberObject(null);
     }
@@ -114,14 +118,14 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
      * @dataProvider provideParanoia
      * @param bool $paranoid
      */
-    public function I_can_use_null_as_integer_zero_if_not_strict($paranoid)
+    public function I_can_use_null_as_integer_zero_if_not_strict(bool $paranoid): void
     {
         $numberObject = new NumberObject($value = null, false /* not strict */, $paranoid);
         self::assertSame(0, $numberObject->getValue());
         self::assertSame((int)null, $numberObject->getValue());
     }
 
-    public function provideParanoia()
+    public function provideParanoia(): array
     {
         return [
             [true],
@@ -136,7 +140,7 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
      * @param bool $strict
      * @param bool $paranoid
      */
-    public function I_cannot_use_array($strict, $paranoid)
+    public function I_cannot_use_array(bool $strict, bool $paranoid): void
     {
         new NumberObject([], $strict, $paranoid);
     }
@@ -148,7 +152,7 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
      * @param bool $strict
      * @param bool $paranoid
      */
-    public function I_cannot_use_resource($strict, $paranoid)
+    public function I_cannot_use_resource(bool $strict, bool $paranoid): void
     {
         new NumberObject(tmpfile(), $strict, $paranoid);
     }
@@ -160,7 +164,7 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
      * @param bool $strict
      * @param bool $paranoid
      */
-    public function I_cannot_use_object_without_to_string_magic($strict, $paranoid)
+    public function I_cannot_use_object_without_to_string_magic(bool $strict, bool $paranoid): void
     {
         new NumberObject(new \stdClass(), $strict, $paranoid);
     }
@@ -171,7 +175,7 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
      * @param bool $strict
      * @param bool $paranoid
      */
-    public function I_can_use_object_with_to_string($strict, $paranoid)
+    public function I_can_use_object_with_to_string(bool $strict, bool $paranoid): void
     {
         $floatNumberObject = new NumberObject(new TestWithToString($floatValue = 123.456), $strict, $paranoid);
         self::assertSame($floatValue, $floatNumberObject->getValue());
@@ -189,12 +193,12 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
      * @dataProvider provideNonNumericNonBoolean
      * @param $value
      */
-    public function I_can_not_use_non_numeric_non_boolean_by_default($value)
+    public function I_can_not_use_non_numeric_non_boolean_by_default($value): void
     {
         new NumberObject($value);
     }
 
-    public function provideNonNumericNonBoolean()
+    public function provideNonNumericNonBoolean(): array
     {
         return [
             [null],
@@ -210,7 +214,7 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
      * @dataProvider provideParanoia
      * @param bool $paranoid
      */
-    public function I_got_zero_from_non_digit_string_if_not_strict($paranoid)
+    public function I_got_zero_from_non_digit_string_if_not_strict(bool $paranoid): void
     {
         $numberObject = new NumberObject('some string without digits', false /* not strict */, $paranoid);
         self::assertSame(0, $numberObject->getValue());
@@ -222,7 +226,7 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
      * @param bool $strict
      * @param bool $paranoid
      */
-    public function I_get_number_without_wrapping_trash($strict, $paranoid)
+    public function I_get_number_without_wrapping_trash(bool $strict, bool $paranoid): void
     {
         $withWrappingZeroes = new NumberObject($zeroWrappedNumber = '0000123456.789000', $strict, $paranoid);
         self::assertSame(123456.789, $withWrappingZeroes->getValue());
@@ -237,7 +241,7 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
      * @dataProvider provideParanoia
      * @param bool $paranoid
      */
-    public function I_get_number_without_tailing_non_zero_trash_if_not_strict($paranoid)
+    public function I_get_number_without_tailing_non_zero_trash_if_not_strict(bool $paranoid): void
     {
         $trashAround = new NumberObject($trashWrappedNumber = '   123456.0051500  foo bar 12565.04181 ', false /* not strict */, $paranoid);
         self::assertSame(123456.00515, $trashAround->getValue());
@@ -248,7 +252,7 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
      * @test
      * @expectedException \Granam\Number\Tools\Exceptions\WrongParameterType
      */
-    public function I_can_not_use_value_with_trailing_non_zero_trash_by_default()
+    public function I_can_not_use_value_with_trailing_non_zero_trash_by_default(): void
     {
         new NumberObject($trashWrappedNumber = '123456.0051500  foo bar 12565.04181 ');
     }
@@ -256,7 +260,7 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
     /**
      * @test
      */
-    public function I_can_use_value_wrapped_by_white_characters()
+    public function I_can_use_value_wrapped_by_white_characters(): void
     {
         $numberObject = new NumberObject($trashWrappedNumber = " \n\t\r\r 123456.0051500 \t\t\n\r\r  ");
         self::assertSame(123456.0051500, $numberObject->getValue());
@@ -267,7 +271,7 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
      * @dataProvider provideStrictness
      * @param bool $strict
      */
-    public function I_get_silently_rounded_number_by_default($strict)
+    public function I_get_silently_rounded_number_by_default(bool $strict): void
     {
         $smallFloat = new NumberObject($withTooLongDecimal = '123456.999999999999999999999999999999999999', $strict);
         self::assertSame(123457, $smallFloat->getValue());
@@ -281,7 +285,7 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
         self::assertEquals($largeFloat, $explicitlyNonParanoidLargeFloat);
     }
 
-    public function provideStrictness()
+    public function provideStrictness(): array
     {
         return [
             [true],
@@ -295,7 +299,7 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
      * @dataProvider provideStrictness
      * @param bool $strict
      */
-    public function I_can_force_exception_on_rounding($strict)
+    public function I_can_force_exception_on_rounding(bool $strict): void
     {
         $nothingIsLost = new NumberObject($value = '123456.9999999', $strict, true /* paranoid */);
         self::assertSame((float)$value, $nothingIsLost->getValue());
@@ -306,7 +310,7 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
     /**
      * @test
      */
-    public function I_can_create_new_number_by_adding_value()
+    public function I_can_create_new_number_by_adding_value(): void
     {
         $number = new NumberObject(123);
         $increased = $number->add(456);
@@ -320,7 +324,7 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
     /**
      * @test
      */
-    public function I_can_create_new_number_by_subtracting_value()
+    public function I_can_create_new_number_by_subtracting_value(): void
     {
         $number = new NumberObject(123);
         $decreased = $number->sub(456);

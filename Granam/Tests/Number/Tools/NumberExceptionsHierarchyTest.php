@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace Granam\Tests\Number\Tools;
 
 use Granam\Number\NumberObject;
@@ -7,19 +9,25 @@ use Granam\Tests\ExceptionsHierarchy\Exceptions\AbstractExceptionsHierarchyTest;
 
 class NumberExceptionsHierarchyTest extends AbstractExceptionsHierarchyTest
 {
-    protected function getTestedNamespace()
+    protected function getTestedNamespace(): string
     {
-        return str_replace('\Tests', '', __NAMESPACE__);
+        return \str_replace('\Tests', '', __NAMESPACE__);
     }
 
-    protected function getRootNamespace()
+    /**
+     * @throws \ReflectionException
+     */
+    protected function getRootNamespace(): string
     {
         $rootReflection = new \ReflectionClass(NumberObject::class);
 
         return $rootReflection->getNamespaceName();
     }
 
-    protected function getExternalRootNamespaces()
+    /**
+     * @throws \ReflectionException
+     */
+    protected function getExternalRootNamespaces(): string
     {
         $externalRootException = new \ReflectionClass(ScalarInterface::class);
 

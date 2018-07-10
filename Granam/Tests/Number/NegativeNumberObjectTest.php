@@ -1,4 +1,6 @@
 <?php
+declare(strict_types = 1);
+
 namespace Granam\Tests\Number;
 
 use Granam\Number\NegativeNumber;
@@ -11,7 +13,7 @@ class NegativeNumberObjectTest extends TestCase
     /**
      * @test
      */
-    public function I_can_create_it()
+    public function I_can_create_it(): void
     {
         $minusOne = new NegativeNumberObject(-1);
         self::assertSame(-1, $minusOne->getValue());
@@ -34,7 +36,7 @@ class NegativeNumberObjectTest extends TestCase
      * @expectedException \Granam\Number\Tools\Exceptions\NegativeNumberCanNotBePositive
      * @expectedExceptionMessageRegExp ~\s0[.]01~
      */
-    public function I_can_not_create_it_positive()
+    public function I_can_not_create_it_positive(): void
     {
         new NegativeNumberObject(0.01);
     }

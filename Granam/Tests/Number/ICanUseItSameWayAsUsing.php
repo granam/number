@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Granam\Tests\Number;
 
 use Granam\Number\Tools\ToNumber;
@@ -7,7 +9,10 @@ use Granam\Tests\Tools\TestWithMockery;
 
 abstract class ICanUseItSameWayAsUsing extends TestWithMockery
 {
-    protected function I_can_create_it_same_way_as_using()
+    /**
+     * @throws \ReflectionException
+     */
+    protected function I_can_create_it_same_way_as_using(): void
     {
         $numberObjectReflection = new \ReflectionClass(NumberObject::class);
         $numberConstructor = $numberObjectReflection->getConstructor()->getParameters();
@@ -16,7 +21,7 @@ abstract class ICanUseItSameWayAsUsing extends TestWithMockery
         self::assertEquals(
             $this->extractParametersDetails($toNumberParameters),
             $this->extractParametersDetails($numberConstructor),
-            'Method ' .ToNumber::class . '::toNumber si called differently than constructor of ' . NumberObject::class
+            'Method ' . ToNumber::class . '::toNumber si called differently than constructor of ' . NumberObject::class
         );
     }
 
@@ -44,7 +49,12 @@ abstract class ICanUseItSameWayAsUsing extends TestWithMockery
         return $extracted;
     }
 
-    protected function assertUsableWithJustValueParameter($sutClass, $testedMethod)
+    /**
+     * @param string $sutClass
+     * @param string $testedMethod
+     * @throws \ReflectionException
+     */
+    protected function assertUsableWithJustValueParameter(string $sutClass, string $testedMethod): void
     {
         $classReflection = new \ReflectionClass($sutClass);
         $method = $classReflection->getMethod($testedMethod);
