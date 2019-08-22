@@ -1,10 +1,11 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Granam\Tests\Number;
 
 use Granam\Number\NumberObject;
 use Granam\Number\NumberInterface;
+use Granam\Number\Tools\Exceptions\ValueLostOnCast;
+use Granam\Number\Tools\Exceptions\WrongParameterType;
 
 class NumberObjectTest extends ICanUseItSameWayAsUsing
 {
@@ -105,11 +106,11 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
 
     /**
      * @test
-     * @expectedException \Granam\Number\Tools\Exceptions\WrongParameterType
-     * @expectedExceptionMessageRegExp ~got NULL~
      */
     public function I_can_not_use_null_by_default(): void
     {
+        $this->expectException(WrongParameterType::class);
+        $this->expectExceptionMessageRegExp('~got NULL~');
         new NumberObject(null);
     }
 
@@ -135,37 +136,37 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
 
     /**
      * @test
-     * @expectedException \Granam\Number\Tools\Exceptions\WrongParameterType
      * @dataProvider provideStrictnessAndParanoia
      * @param bool $strict
      * @param bool $paranoid
      */
     public function I_cannot_use_array(bool $strict, bool $paranoid): void
     {
+        $this->expectException(WrongParameterType::class);
         new NumberObject([], $strict, $paranoid);
     }
 
     /**
      * @test
-     * @expectedException \Granam\Number\Tools\Exceptions\WrongParameterType
      * @dataProvider provideStrictnessAndParanoia
      * @param bool $strict
      * @param bool $paranoid
      */
     public function I_cannot_use_resource(bool $strict, bool $paranoid): void
     {
+        $this->expectException(WrongParameterType::class);
         new NumberObject(tmpfile(), $strict, $paranoid);
     }
 
     /**
      * @test
-     * @expectedException \Granam\Number\Tools\Exceptions\WrongParameterType
      * @dataProvider provideStrictnessAndParanoia
      * @param bool $strict
      * @param bool $paranoid
      */
     public function I_cannot_use_object_without_to_string_magic(bool $strict, bool $paranoid): void
     {
+        $this->expectException(WrongParameterType::class);
         new NumberObject(new \stdClass(), $strict, $paranoid);
     }
 
@@ -189,12 +190,12 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
 
     /**
      * @test
-     * @expectedException \Granam\Number\Tools\Exceptions\WrongParameterType
      * @dataProvider provideNonNumericNonBoolean
      * @param $value
      */
     public function I_can_not_use_non_numeric_non_boolean_by_default($value): void
     {
+        $this->expectException(WrongParameterType::class);
         new NumberObject($value);
     }
 
@@ -250,10 +251,10 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
 
     /**
      * @test
-     * @expectedException \Granam\Number\Tools\Exceptions\WrongParameterType
      */
     public function I_can_not_use_value_with_trailing_non_zero_trash_by_default(): void
     {
+        $this->expectException(WrongParameterType::class);
         new NumberObject($trashWrappedNumber = '123456.0051500  foo bar 12565.04181 ');
     }
 
@@ -295,12 +296,12 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
 
     /**
      * @test
-     * @expectedException \Granam\Number\Tools\Exceptions\ValueLostOnCast
      * @dataProvider provideStrictness
      * @param bool $strict
      */
     public function I_can_force_exception_on_rounding(bool $strict): void
     {
+        $this->expectException(ValueLostOnCast::class);
         $nothingIsLost = new NumberObject($value = '123456.9999999', $strict, true /* paranoid */);
         self::assertSame((float)$value, $nothingIsLost->getValue());
         new NumberObject('123456.999999999999999999999999999999999999', $strict, true /* paranoid */);

@@ -1,11 +1,11 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Granam\Tests\Number;
 
 use Granam\Number\PositiveNumberObject;
 use Granam\Number\NumberObject;
 use Granam\Number\PositiveNumber;
+use Granam\Number\Tools\Exceptions\PositiveNumberCanNotBeNegative;
 use PHPUnit\Framework\TestCase;
 
 class PositiveNumberObjectTest extends TestCase
@@ -33,11 +33,11 @@ class PositiveNumberObjectTest extends TestCase
 
     /**
      * @test
-     * @expectedException \Granam\Number\Tools\Exceptions\PositiveNumberCanNotBeNegative
-     * @expectedExceptionMessageRegExp ~-1~
      */
     public function I_can_not_create_it_negative(): void
     {
+        $this->expectException(PositiveNumberCanNotBeNegative::class);
+        $this->expectExceptionMessageRegExp('~-1~');
         new PositiveNumberObject(-1);
     }
 }

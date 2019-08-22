@@ -1,10 +1,12 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace Granam\Tests\Number\Tools;
 
 use Granam\Number\NumberInterface;
 use Granam\Number\NumberObject;
+use Granam\Number\Tools\Exceptions\NegativeNumberCanNotBePositive;
+use Granam\Number\Tools\Exceptions\PositiveNumberCanNotBeNegative;
+use Granam\Number\Tools\Exceptions\WrongParameterType;
 use Granam\Number\Tools\ToNumber;
 use Granam\Tests\Number\ICanUseItSameWayAsUsing;
 
@@ -30,19 +32,19 @@ class ToNumberTest extends ICanUseItSameWayAsUsing
 
     /**
      * @test
-     * @expectedException \Granam\Number\Tools\Exceptions\WrongParameterType
      */
     public function I_can_not_use_null_by_default(): void
     {
+        $this->expectException(WrongParameterType::class);
         ToNumber::toNumber(null);
     }
 
     /**
      * @test
-     * @expectedException \Granam\Number\Tools\Exceptions\WrongParameterType
      */
     public function I_can_not_use_null_if_strict(): void
     {
+        $this->expectException(WrongParameterType::class);
         ToNumber::toNumber(null);
     }
 
@@ -81,10 +83,10 @@ class ToNumberTest extends ICanUseItSameWayAsUsing
 
     /**
      * @test
-     * @expectedException \Granam\Number\Tools\Exceptions\NegativeNumberCanNotBePositive
      */
     public function I_can_not_use_positive_number_as_negative(): void
     {
+        $this->expectException(NegativeNumberCanNotBePositive::class);
         ToNumber::toNegativeNumber(0.1);
     }
 
@@ -106,10 +108,10 @@ class ToNumberTest extends ICanUseItSameWayAsUsing
 
     /**
      * @test
-     * @expectedException \Granam\Number\Tools\Exceptions\PositiveNumberCanNotBeNegative
      */
     public function I_can_not_use_negative_number_as_positive(): void
     {
+        $this->expectException(PositiveNumberCanNotBeNegative::class);
         ToNumber::toPositiveNumber(-0.001);
     }
 
