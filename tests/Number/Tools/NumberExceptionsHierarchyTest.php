@@ -1,5 +1,4 @@
 <?php declare(strict_types=1);
-declare(strict_types = 1);
 
 namespace Granam\Tests\Number\Tools;
 
@@ -14,9 +13,6 @@ class NumberExceptionsHierarchyTest extends AbstractExceptionsHierarchyTest
         return \str_replace('\Tests', '', __NAMESPACE__);
     }
 
-    /**
-     * @throws \ReflectionException
-     */
     protected function getRootNamespace(): string
     {
         $rootReflection = new \ReflectionClass(NumberObject::class);
@@ -24,14 +20,11 @@ class NumberExceptionsHierarchyTest extends AbstractExceptionsHierarchyTest
         return $rootReflection->getNamespaceName();
     }
 
-    /**
-     * @throws \ReflectionException
-     */
-    protected function getExternalRootNamespaces(): string
+    protected function getExternalRootNamespaces(): array
     {
         $externalRootException = new \ReflectionClass(ScalarInterface::class);
 
-        return $externalRootException->getNamespaceName();
+        return [$externalRootException->getNamespaceName()];
     }
 
 }

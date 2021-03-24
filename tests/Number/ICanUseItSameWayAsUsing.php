@@ -4,7 +4,7 @@ namespace Granam\Tests\Number;
 
 use Granam\Number\Tools\ToNumber;
 use Granam\Number\NumberObject;
-use Granam\Tests\Tools\TestWithMockery;
+use Granam\TestWithMockery\TestWithMockery;
 
 abstract class ICanUseItSameWayAsUsing extends TestWithMockery
 {
@@ -34,8 +34,8 @@ abstract class ICanUseItSameWayAsUsing extends TestWithMockery
         foreach ($parameterReflections as $parameterReflection) {
             $extractedParameter = [];
             foreach (get_class_methods($parameterReflection) as $methodName) {
-                if (\in_array($methodName, ['getName', 'isPassedByReference', 'canBePassedByValue', 'isArray',
-                        'isCallable', 'allowsNull', 'getPosition', 'isOptional', 'isDefaultValueAvailable',
+                if (\in_array($methodName, ['getName', 'isPassedByReference', 'canBePassedByValue', 'getType',
+                        'allowsNull', 'getPosition', 'isOptional', 'isDefaultValueAvailable',
                         'getDefaultValue', 'isVariadic', 'hasType', 'getType'], true)
                     && ($methodName !== 'getDefaultValue' || $parameterReflection->isDefaultValueAvailable())
                 ) {

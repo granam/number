@@ -17,14 +17,10 @@ class NumberExceptionsHierarchyTest extends AbstractExceptionsHierarchyTest
         return \str_replace('\Tests', '', __NAMESPACE__);
     }
 
-    /**
-     * @return string
-     * @throws \ReflectionException
-     */
-    protected function getExternalRootNamespaces(): string
+    protected function getExternalRootNamespaces(): array
     {
         $externalRootReflection = new \ReflectionClass(ScalarInterface::class);
 
-        return $externalRootReflection->getNamespaceName();
+        return [$externalRootReflection->getNamespaceName()];
     }
 }

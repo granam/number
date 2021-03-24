@@ -1,5 +1,4 @@
 <?php declare(strict_types=1);
-declare(strict_types = 1);
 
 namespace Granam\Tests\Number;
 
@@ -38,7 +37,7 @@ class NegativeNumberObjectTest extends TestCase
     public function I_can_not_create_it_positive(): void
     {
         $this->expectException(NegativeNumberCanNotBePositive::class);
-        $this->expectExceptionMessageRegExp('~\s0[.]01~');
+        $this->expectExceptionMessageMatches('~\s0[.]01~');
         new NegativeNumberObject(0.01);
     }
 }

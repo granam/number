@@ -110,7 +110,7 @@ class NumberObjectTest extends ICanUseItSameWayAsUsing
     public function I_can_not_use_null_by_default(): void
     {
         $this->expectException(WrongParameterType::class);
-        $this->expectExceptionMessageRegExp('~got NULL~');
+        $this->expectExceptionMessageMatches('~got NULL~');
         new NumberObject(null);
     }
 

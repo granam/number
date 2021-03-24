@@ -37,7 +37,7 @@ class PositiveNumberObjectTest extends TestCase
     public function I_can_not_create_it_negative(): void
     {
         $this->expectException(PositiveNumberCanNotBeNegative::class);
-        $this->expectExceptionMessageRegExp('~-1~');
+        $this->expectExceptionMessageMatches('~-1~');
         new PositiveNumberObject(-1);
     }
 }
